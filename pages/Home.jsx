@@ -12,6 +12,7 @@ export default function Home() {
             <div className="home-changelog">
                 <h2>Changelog: </h2>
                 <ul>
+                    <li>9/14: Added spoiler toggle within individual's details page</li>
                     <li>9/13: Updated theme and added spoilers filter</li>
                     <li>9/10: Implemented filtering by multiple personality tags</li>
                     <li>9/9: Implemented filtering by personality tag</li>
