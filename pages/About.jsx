@@ -1,8 +1,10 @@
 import React from "react"
+import bgImg from "../assets/images/cloud-heart.jpg"
 
 export default function About() {
     return (
         <div className="about-page-container">
+            <img src={bgImg} className="about-main-image" />
             <div className="about-page-content">
                 <h1>It can be hard to find another otome guy like your current favorite.</h1>
                 <p>That's why I made this site to help people find their next otome love interest by allowing them to filter through the personality tags they've been tagged with on vndb. This site uses the vndb API to fetch results.</p>

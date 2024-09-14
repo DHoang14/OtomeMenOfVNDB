@@ -5,7 +5,7 @@
 html, body {
     margin: 0;
     padding: 0;
-    background-color: #FFF7ED;
+    background-color: #dee8ff;
     font-family: "Inter", sans-serif;
 }
 
@@ -40,8 +40,9 @@ header .site-logo {
     color: black;
     margin-right: auto;
     text-transform: uppercase;
-    font-weight: 900;
+    font-weight: 700;
     font-size: 25px;
+    font-family: "Oleo Script", sans-serif;
 }
 
 header a {
@@ -80,6 +81,43 @@ footer {
     font-weight: 500;
 }
 
+input[type="checkbox"] {
+    appearance: none;
+    background-color: #fff;
+    margin: 0;
+    font: inherit;
+    width: 1.15em;
+    height: 1.15em;
+    border: 0.15em solid #424242;
+    border-radius: 0.15em;
+    transform: translateY(-0.075em);
+    
+    display: grid;
+    place-content: center;
+}
+
+input[type="checkbox"]::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    background-color: #19678b;
+
+    transform-origin: bottom left;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+
+.checkbox {
+    display: grid;
+    grid-template-columns: 1em auto;
+    gap: 0.5em;
+}
+
 .link-button {
     display: inline-block;
     text-align: center;
@@ -108,6 +146,22 @@ footer {
     transform: translate(1px, 1px);
 }
 
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #276070;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #264b64;
+}
+
 /*** HOME PAGE ***/
 .home-banner {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.46), rgba(0, 0, 0, 0.46)), url("./assets/images/hydrangea-banner.jpg") no-repeat center center;
@@ -134,7 +188,7 @@ footer {
     display: inline-block;
     text-align: center;
     text-decoration: none;
-    background-color: #FF8C38;
+    background-color: #59a2c4;
     border: none;
     width: 100%;
     margin-top: 27px;
@@ -155,6 +209,11 @@ footer {
 }
 
 /*** ABOUT PAGE ***/
+.about-main-image {
+    width: 100%;
+    max-height: 400px;
+}
+
 .about-page-content {
     padding-inline: 23px;
     color: #161616;
@@ -224,6 +283,10 @@ footer {
     grid-column: 1 / span 2;
 }
 
+.man-tile {
+    width: 400px;
+}
+
 .man-tile a {
     color: #161616;
     text-decoration: none;    
@@ -243,15 +306,15 @@ footer {
     height: 34px;
     font-style: normal;
     font-weight: 500;
-    border: none;
+    border-style: none;
     border-radius: 5px;
-    background-color: #FFEAD0;
-    color: #4D4D4D;
+    background-color: #59a2c4;
+    color: #FFFFFF;
     transition: 200ms all cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .man-type:hover {
-    color: #FFEAD0;
+    color: #000000;
 }
 
 .man-type:focus {
@@ -259,24 +322,11 @@ footer {
 }
 
 .man-type.selected {
-    color: #FFEAD0;
+    color: #000000;
 }
 
 .man-type.simple:hover, .man-type.simple.selected {
-    background-color: #E17654;
-}
-
-.man-type.clear-filters {
-    margin-left: -20px;
-    height: 34px;
-    padding: 6px 26px;
-    font-style: normal;
-    font-weight: 500;
-    border: none;
-    border-radius: 5px;
-    text-decoration: underline;
-    background-color: transparent;
-    color: #4D4D4D;
+    background-color: #59a2c4;
 }
 
 i[class*='man-type-'] {
@@ -304,33 +354,25 @@ i[class*='man-type-'] {
 
 .man-detail img {
     border-radius: 5px;
-    margin-block: 47px;
+    margin-block: 47px 10px;
     max-width: 200px;
 }
 
 .man-detail h2 {
     font-size: 2rem;
-    margin-bottom: 10px;
+    margin: 0 0 10px 0;
 }
 
 .man-detail > i {
     align-self: flex-start;
 }
 
-.man-detail .man-price {
-    font-size: 1.25rem;
-    margin-bottom: 10px;
+.man-detail-titles {
+    margin: 0;
 }
 
-.man-detail .man-price span {
-    font-weight: 700;
-    font-size: 1.5rem;
-}
-
-.man-detail .link-button {
-    background-color: #FF8C38;
-    color: white;
-    font-size: 1.125rem;
+.man-detail > p {
+    margin: 0 0 10px 0;
 }
 
 .not-found-container {

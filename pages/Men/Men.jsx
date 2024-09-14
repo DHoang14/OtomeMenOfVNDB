@@ -10,22 +10,29 @@ import {
 } from "react-router-dom"
 import { getCharacters, getCharactersOfType, getCount } from "../../api"
 import traitsJson from "../../traits.json"
+import missingImg from "../../assets/images/NoImage.png"
 
 export function loader({request}) {
     const searchParams = new URL(request.url).searchParams
     const type = searchParams.get("type")
     const page = searchParams.get("page")
+    const spoilerLevel = searchParams.get("spoiler") || "0"
+
 
     if (type) {
-        return defer({ men: getCharactersOfType(type, page), count: getCount(type) })
+        return defer({ men: getCharactersOfType(spoilerLevel, type, page), count: getCount(spoilerLevel, type) })
     }
-    return defer({ men: getCharacters(page), count: getCount() })
+    return defer({ men: getCharacters(page), count: getCount("0") })
 }
 
 export async function action ({request}) {
     const formData = await request.formData()
     const traitsSelected = Array.from(formData.keys())
-    return redirect(traitsSelected.length > 0? `?type=${traitsSelected.join(":")}` : "")
+    traitsSelected.pop() //last key will always be spoiler level, so remove from array of traits
+    const spoilerLevel = formData.get("spoiler_level")
+    let redirectUrl = spoilerLevel > 0? `?spoiler=${spoilerLevel}` : ""
+    return redirect(traitsSelected.length > 0? 
+        `${redirectUrl}${redirectUrl.length > 0? "&" : "?"}type=${traitsSelected.join(":")}` : redirectUrl)
 
 }
 
@@ -33,19 +40,12 @@ export default function Men() {
     const [searchParams, setSearchParams] = useSearchParams()
     const dataPromise = useLoaderData()
 
-    const typeFilter = searchParams.get("type")
-    function handleFilterChange(key, value) {
-        setSearchParams(prevParams => {
-            prevParams.delete("page")
+    let spoilerLevel = searchParams.get("spoiler") || 0
 
-            if (value === null) {
-                prevParams.delete(key)
-            } else {
-                prevParams.set(key, value)
-            }
-            return prevParams
-        })
+    if (spoilerLevel !== 0) {
+        spoilerLevel = parseInt(spoilerLevel)
     }
+
     function loadMore(page) {
         setSearchParams(prevParams => {
             if (page === null) {
@@ -66,10 +66,56 @@ export default function Men() {
         }
     }
 
+    function renderFilters() {
+        const filterString = searchParams.get("type")
+        const listOfSelectedIds = filterString? filterString.split(":") : null
+        const personalityFiltersChecks = traitsJson.personality_traits.map(trait => {
+            return (
+                <label className="checkbox" key={trait.name + "Checkbox"}>
+                    <input
+                        className="personalityFilter"
+                        type="checkbox"
+                        name={trait.id}
+                        defaultChecked={listOfSelectedIds? listOfSelectedIds.includes(trait.id.toString()) : false}
+                    />
+                {trait.name}</label>
+            )
+        })
+
+        const spoilerElement = (
+            <div>
+                <label>
+                    <input type="radio" name="spoiler_level" value="0" defaultChecked={spoilerLevel === 0} />
+                No spoilers</label><br/>
+                <label>
+                    <input type="radio" name="spoiler_level" value="1" defaultChecked={spoilerLevel === 1} />
+                Minor spoilers</label><br/>
+                <label>
+                    <input type="radio" name="spoiler_level" value="2" defaultChecked={spoilerLevel === 2}/>
+                Show all spoilers</label><br/>
+            </div>
+        )
+
+        return (
+            <div className="man-list-filter-buttons">
+                <Form method="post" className="man-list-filter-form">
+                    <h2>Personality Traits</h2>
+                    {personalityFiltersChecks}
+                    <h2>Spoiler Level</h2>
+                    {spoilerElement}
+                    <button className="man-type simple">Apply filters</button>
+                </Form>
+                <button className="man-type simple" onClick={() => clearFilters()}>Clear all filters</button>
+            </div>
+        )
+    }
+
     function renderMenElements(data) {
         const displayedMen = data[0].results //results of the api call
+    
         const menElements = displayedMen.map(man =>  {
-            const traits = man.traits.filter(trait => trait.group_id === "i39") //only list personality traits
+
+            const traits = man.traits.filter(trait => trait.group_id === "i39" && trait.spoiler <= spoilerLevel) //only list personality traits
             const traitNames = traits.map(trait => trait.name)
             return (
             <div key={man.id} className="man-tile">
@@ -77,33 +123,17 @@ export default function Men() {
                     to={man.id}
                     state={{
                         search: `?${searchParams.toString()}`,
+                        spoilerLevel: spoilerLevel
                     }}
                 >
-                    <img src={man.image?.url || "data:,"} />
+                    <img src={man.image?.url || missingImg} />
                     <div className="man-info">
                         <h3>{man.name}</h3>
-                        <p>Traits: {traitNames.join(", ")}</p>
+                        <p>Traits: {traitNames.length > 0? traitNames.join(", ") : "None have been added to this character."}</p>
                     </div>
                 </Link>
             </div>
             )})
-
-        const filterString = searchParams.get("type")
-        const listOfSelectedIds = filterString? filterString.split(":") : null
-        const personalityFiltersChecks = traitsJson.personality_traits.map(trait => {
-            return (
-                <div key={trait.name + "Checkbox"}>
-                    <input
-                        className="personalityFilter"
-                        type="checkbox"
-                        name={trait.id}
-                        id={trait.id}
-                        defaultChecked={listOfSelectedIds? listOfSelectedIds.includes(trait.id.toString()) : false}
-                    />
-                    <label htmlFor={trait.id}>{trait.name}</label>
-                </div>
-            )
-        })
 
         const pages = Math.ceil(data[1].count / 10)
         const currentPage = parseInt(searchParams.get("page"), 10) || 1
@@ -175,38 +205,27 @@ export default function Men() {
 
 
         return (
-            <>
-                <div className="man-list-content-container">
-                    <div className="man-list-filter-buttons">
-                        <h2>Personality Traits</h2>
-                        <Form method="post" className="man-list-filter-form">
-                            {personalityFiltersChecks}
-                            <button className="man-type simple">Apply filters</button>
-                        </Form>
-                        <button className="man-type simple" onClick={() => clearFilters()}>Clear all filters</button>
-
-                    </div>
-                    <div className="man-list">
-                        {data[1].count === 0 && <h3 className="man-list-no-results">No results found.</h3>}
-                        {menElements}
-                        <div className="page-list">
-                            {pageElements}
-                        </div>
-                    </div>
+            <div className="man-list">
+                {data[1].count === 0 && <h3 className="man-list-no-results">No results found.</h3>}
+                {menElements}
+                <div className="page-list">
+                    {pageElements}
                 </div>
-                
-            </>
+            </div>
         )
     }
 
     return (
         <div className="man-list-container">
             <h1>Look through a list of otome men</h1>
-            <React.Suspense fallback={<h2>Loading men...</h2>}>
-                <Await resolve={Promise.all([dataPromise.men, dataPromise.count])}>
-                    {renderMenElements}
-                </Await>
-            </React.Suspense>
+            <div className="man-list-content-container">
+                {renderFilters()}
+                <React.Suspense fallback={<h2>Loading men...</h2>}>
+                    <Await resolve={Promise.all([dataPromise.men, dataPromise.count])}>
+                        {renderMenElements}
+                    </Await>
+                </React.Suspense>
+            </div>
         </div>
     )
 }

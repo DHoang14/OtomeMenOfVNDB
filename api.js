@@ -4,7 +4,7 @@ export async function getCharacters(page) {
         bodyObj.page = page
     }
     
-    const data = await makeRequest(bodyObj)
+    const data = await makeRequest(bodyObj, 0)
     return data
 }
 
@@ -16,41 +16,40 @@ export async function getCharacter(id) {
         bodyObj.fields = bodyObj.fields + ", vns.title"
     }
 
-    const data = await makeRequest(bodyObj, "individual")
+    const data = await makeRequest(bodyObj, 0, "individual")
     return data
 }
 
-export async function getCharactersOfType(id, page) {
+export async function getCharactersOfType(spoilerLevel, id, page) {
     const bodyObj = createBasicOptionsObj()
     if (page) {
         bodyObj.page = page
     }
     const listOfIds = id.split(":")
     for(let tagId in listOfIds) {
-        bodyObj.filters.push(["trait", "=", [`i${listOfIds[tagId]}`, 2]])
+        bodyObj.filters.push(["trait", "=", [`i${listOfIds[tagId]}`, spoilerLevel]])
     }
-
-    const data = await makeRequest(bodyObj, id)
+    const data = await makeRequest(bodyObj, spoilerLevel, id)
     return data
 }
 
-export async function getCount(id) {
+export async function getCount(spoilerLevel, id) {
     const bodyObj = createBasicOptionsObj()
     bodyObj.results = 0
     bodyObj.count = true
     if (id) {
         const listOfIds = id.split(":")
         for(let tagId in listOfIds) {
-            bodyObj.filters.push(["trait", "=", [`i${listOfIds[tagId]}`, 2]])
+            bodyObj.filters.push(["trait", "=", [`i${listOfIds[tagId]}`, spoilerLevel]])
         }
     }
 
-    const data = await makeRequest(bodyObj, id)
+    const data = await makeRequest(bodyObj, spoilerLevel, id)
     return data
 }
 
-async function makeRequest(body, id) {
-    let key = id === "individual"? null : `Ids:${id? id : "general"}`
+async function makeRequest(body, spoilerLevel, id) {
+    let key = id === "individual"? null : `Spoiler:${spoilerLevel}Ids:${id? id : "general"}`
     if (key && body.count) { //if looking for count
         key += "Count"
     }
@@ -96,7 +95,7 @@ function createBasicOptionsObj() {
             ["vn", "=", 
                 ["tag", "=", ["g542", 2, 0]]]
             ],
-        "fields" : "name, id, image.url, traits.name, traits.group_id", 
+        "fields" : "name, id, image.url, traits.name, traits.group_id, traits.spoiler", 
         "sort" : "id", 
         "results" : 10, 
         "page" : 1,
