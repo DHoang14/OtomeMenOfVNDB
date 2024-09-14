@@ -10,9 +10,14 @@ export function loader({ params }) {
 export default function ManDetail() {
     const location = useLocation()
     const dataPromise = useLoaderData()
-    
+    const [spoilerLevel, setSpoilerLevel] = React.useState(location.state?.spoilerLevel.toString() || "0")
     const search = location.state?.search || "";
-    const spoilerLevel = location.state?.spoilerLevel || 0
+
+    function handleChange(event) {
+        const {value} = event.target
+        setSpoilerLevel(value)
+    }
+
     function renderManElement(manData) {
         const man = manData.results[0]
         const personalityTraits = man.traits.filter(trait => trait.group_id === "i39" && trait.spoiler <= spoilerLevel)
@@ -28,6 +33,19 @@ export default function ManDetail() {
                 <ul className="man-detail-titles">
                     {titles}
                 </ul>
+                <br/>
+                <fieldset>
+                    <legend>Spoiler Level for Personality Traits</legend>
+                    <label>
+                        <input type="radio" name="spoiler_level" value="0" checked={spoilerLevel === "0"} onChange={handleChange} />
+                    No spoilers</label><br/>
+                    <label>
+                        <input type="radio" name="spoiler_level" value="1" checked={spoilerLevel === "1"} onChange={handleChange}/>
+                    Minor spoilers</label><br/>
+                    <label>
+                        <input type="radio" name="spoiler_level" value="2" checked={spoilerLevel === "2"} onChange={handleChange}/>
+                    Show all spoilers</label><br/>
+                </fieldset>
             </div>
         )
     }

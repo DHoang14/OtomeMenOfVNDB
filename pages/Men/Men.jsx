@@ -99,10 +99,14 @@ export default function Men() {
         return (
             <div className="man-list-filter-buttons">
                 <Form method="post" className="man-list-filter-form">
-                    <h2>Personality Traits</h2>
-                    {personalityFiltersChecks}
-                    <h2>Spoiler Level</h2>
-                    {spoilerElement}
+                    <fieldset>
+                        <legend>Personality Traits</legend>
+                        {personalityFiltersChecks}
+                    </fieldset>
+                    <fieldset>
+                        <legend>Spoiler Level</legend>
+                        {spoilerElement}
+                    </fieldset>
                     <button className="man-type simple">Apply filters</button>
                 </Form>
                 <button className="man-type simple" onClick={() => clearFilters()}>Clear all filters</button>
