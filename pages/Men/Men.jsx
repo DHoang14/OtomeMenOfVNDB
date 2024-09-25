@@ -97,8 +97,8 @@ export default function Men() {
         )
 
         return (
-            <div className="man-list-filter-buttons">
-                <Form method="post" className="man-list-filter-form">
+            <div className="man-filter-container">
+                <Form method="post" className="man-filter-form">
                     <fieldset>
                         <legend>Personality Traits</legend>
                         {personalityFiltersChecks}
@@ -107,9 +107,9 @@ export default function Men() {
                         <legend>Spoiler Level</legend>
                         {spoilerElement}
                     </fieldset>
-                    <button className="man-type simple">Apply filters</button>
+                    <button className="man-button">Apply filters</button>
                 </Form>
-                <button className="man-type simple" onClick={() => clearFilters()}>Clear all filters</button>
+                <button className="man-button" onClick={() => clearFilters()}>Clear all filters</button>
             </div>
         )
     }
@@ -145,7 +145,7 @@ export default function Men() {
             <button 
                 onClick={() => loadMore(null)}
                 className={
-                    `man-type simple 
+                    `man-button 
                 ${currentPage === 1 ? "selected" : ""}`}
                 key="page1"
             >1</button>]
@@ -154,7 +154,7 @@ export default function Men() {
         if (currentPage - 2 > 1) {
             pageElements.push(
                 <button 
-                    className="man-type simple"
+                    className="man-button"
                     key="pageDividerLeft"
                 >...</button>)
         }
@@ -164,7 +164,7 @@ export default function Men() {
             pageElements.push(
                 <button 
                     onClick={() => loadMore(currentPage - 1)}
-                    className="man-type simple"
+                    className="man-button"
                     key={`page${currentPage - 1}`}
                 >{currentPage - 1}</button>)
         }
@@ -173,7 +173,7 @@ export default function Men() {
             pageElements.push(
                 <button 
                     onClick={() => loadMore(currentPage)}
-                    className="man-type simple selected"
+                    className="man-button selected"
                     key={`page${currentPage}`}
                 >{currentPage}</button>)
         }
@@ -183,7 +183,7 @@ export default function Men() {
             pageElements.push(
                 <button 
                     onClick={() => loadMore(currentPage + 1)}
-                    className="man-type simple"
+                    className="man-button"
                     key={`page${currentPage + 1}`}
                 >{currentPage + 1}</button>)
         }
@@ -191,7 +191,7 @@ export default function Men() {
         if (currentPage + 2 < pages) {
             pageElements.push(
                 <button 
-                    className="man-type simple"
+                    className="man-button"
                     key="pageDividerRight"
                 >...</button>)
         }
@@ -201,7 +201,7 @@ export default function Men() {
                 <button 
                     onClick={() => loadMore(pages)}
                     className={
-                        `man-type simple 
+                        `man-button 
                     ${currentPage === pages ? "selected" : ""}`}
                     key={`page${pages}`}
                 >{pages}</button>)
@@ -212,7 +212,7 @@ export default function Men() {
             <div className="man-list">
                 {data[1].count === 0 && <h3 className="man-list-no-results">No results found.</h3>}
                 {menElements}
-                <div className="page-list">
+                <div className="man-page-list">
                     {pageElements}
                 </div>
             </div>
@@ -220,7 +220,7 @@ export default function Men() {
     }
 
     return (
-        <div className="man-list-container">
+        <div className="man-page-container">
             <h1>Look through a list of otome men</h1>
             <div className="man-list-content-container">
                 {renderFilters()}
