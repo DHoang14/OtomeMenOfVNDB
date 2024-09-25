@@ -66,7 +66,7 @@ nav {
 }
 
 main {
-    margin-bottom: 84px;
+    margin-bottom: 50px;
 }
 
 input[type="checkbox"] {
@@ -216,9 +216,13 @@ input[type="checkbox"]:checked::before {
     line-height: 22px;
 }
 
-/*** man PAGES ***/
+/*** MAN PAGES ***/
 .man-list-container {
     padding-inline: 23px
+}
+
+.man-list-container > h1 {
+    margin: 0;
 }
 
 .man-list-filter-buttons {
@@ -358,6 +362,20 @@ i[class*='man-type-'] {
 .man-detail > p {
     margin: 0 0 10px 0;
 }
+
+/*** TAG PAGE ****/
+.tag-content {
+    padding: 0 20px 0 20px;
+}
+
+.tag-header {
+    margin: 0;
+}
+
+.tag-item  > a{
+    text-decoration: underline;
+}
+
 
 .not-found-container {
     padding-inline: 26px;
