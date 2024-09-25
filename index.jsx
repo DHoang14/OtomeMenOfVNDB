@@ -9,6 +9,7 @@ import {
 } from "react-router-dom"
 import Home from "./pages/Home"
 import About from "./pages/About"
+import TagInfo from "./pages/TagInfo"
 import Men, { loader as menLoader, action as menAction } from "./pages/Men/Men"
 import ManDetail, { loader as manDetailLoader } from "./pages/Men/ManDetail"
 import NotFound from "./pages/NotFound"
@@ -32,6 +33,7 @@ const router = createBrowserRouter(createRoutesFromElements(
       errorElement={<Error />}
       loader={manDetailLoader}
     />
+    <Route path="tags" element={<TagInfo />} />
 
     <Route path="*" element={<NotFound />} />
   </Route>

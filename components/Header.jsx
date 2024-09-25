@@ -18,6 +18,12 @@ export default function Header() {
                 >
                     About
                 </NavLink>
+                <NavLink
+                    to="tags"
+                    style={({isActive}) => isActive ? activeStyles : null}
+                >
+                    Tag Information
+                </NavLink>
                 <NavLink 
                     to="men"
                     style={({isActive}) => isActive ? activeStyles : null}
