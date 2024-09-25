@@ -230,6 +230,11 @@ input[type="checkbox"]:checked::before {
     cursor: pointer;
 }
 
+.man-page-content-container {
+    display: flex;
+    margin-top: 50px;
+}
+
 .man-filter-container {
     display: flex;
     flex-wrap: wrap;
@@ -248,11 +253,6 @@ input[type="checkbox"]:checked::before {
 
 .man-filter-form > button {
     margin: 20px 0 0 0;
-}
-
-.man-list-content-container {
-    display: flex;
-    margin-top: 50px;
 }
 
 .man-page-list {

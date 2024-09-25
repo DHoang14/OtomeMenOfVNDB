@@ -12,12 +12,12 @@ import { getCharacters, getCharactersOfType, getCount } from "../../api"
 import traitsJson from "../../traits.json"
 import missingImg from "../../assets/images/NoImage.png"
 
+//on page load, retrieve character data depending on applied filters and page
 export function loader({request}) {
     const searchParams = new URL(request.url).searchParams
     const type = searchParams.get("type")
     const page = searchParams.get("page")
     const spoilerLevel = searchParams.get("spoiler") || "0"
-
 
     if (type) {
         return defer({ men: getCharactersOfType(spoilerLevel, type, page), count: getCount(spoilerLevel, type) })
@@ -25,6 +25,7 @@ export function loader({request}) {
     return defer({ men: getCharacters(page), count: getCount("0") })
 }
 
+//after personality tags and spoiler level is applied
 export async function action ({request}) {
     const formData = await request.formData()
     const traitsSelected = Array.from(formData.keys())
@@ -33,19 +34,19 @@ export async function action ({request}) {
     let redirectUrl = spoilerLevel > 0? `?spoiler=${spoilerLevel}` : ""
     return redirect(traitsSelected.length > 0? 
         `${redirectUrl}${redirectUrl.length > 0? "&" : "?"}type=${traitsSelected.join(":")}` : redirectUrl)
-
 }
 
 export default function Men() {
     const [searchParams, setSearchParams] = useSearchParams()
     const dataPromise = useLoaderData()
 
+    //assume no spoilers if not specified
     let spoilerLevel = searchParams.get("spoiler") || 0
-
     if (spoilerLevel !== 0) {
         spoilerLevel = parseInt(spoilerLevel)
     }
 
+    //set page number in search params
     function loadMore(page) {
         setSearchParams(prevParams => {
             if (page === null) {
@@ -57,6 +58,7 @@ export default function Men() {
         })
     }
 
+    //unchecks all personality filters
     function clearFilters() {
         const personalityFilters = document.getElementsByClassName("personalityFilter")
         for(let filter in personalityFilters) {
@@ -66,9 +68,13 @@ export default function Men() {
         }
     }
 
+    //creates filters section to apply on left
     function renderFilters() {
         const filterString = searchParams.get("type")
+        //decides which personality tags need to be automatically checked to reflect applied filters of the page on load
         const listOfSelectedIds = filterString? filterString.split(":") : null
+        
+        //creates personality tags checkboxes
         const personalityFiltersChecks = traitsJson.personality_traits.map(trait => {
             return (
                 <label className="checkbox" key={trait.name + "Checkbox"}>
@@ -82,6 +88,7 @@ export default function Men() {
             )
         })
 
+        //creates spoiler level selection
         const spoilerElement = (
             <div>
                 <label>
@@ -114,12 +121,13 @@ export default function Men() {
         )
     }
 
+    //renders results on right with current page at the bottom
     function renderMenElements(data) {
         const displayedMen = data[0].results //results of the api call
     
         const menElements = displayedMen.map(man =>  {
-
-            const traits = man.traits.filter(trait => trait.group_id === "i39" && trait.spoiler <= spoilerLevel) //only list personality traits
+            //only list personality traits of selected spoiler level
+            const traits = man.traits.filter(trait => trait.group_id === "i39" && trait.spoiler <= spoilerLevel)
             const traitNames = traits.map(trait => trait.name)
             return (
             <div key={man.id} className="man-tile">
@@ -139,8 +147,11 @@ export default function Men() {
             </div>
             )})
 
-        const pages = Math.ceil(data[1].count / 10)
+        //creates pages at the bottom
+        const pages = Math.ceil(data[1].count / 10) //total pages
         const currentPage = parseInt(searchParams.get("page"), 10) || 1
+
+        //always show option to go to first page
         const pageElements = [            
             <button 
                 onClick={() => loadMore(null)}
@@ -151,6 +162,7 @@ export default function Men() {
             >1</button>]
 
 
+        //show "..." divider between page 1 and current page if there is significant gap
         if (currentPage - 2 > 1) {
             pageElements.push(
                 <button 
@@ -159,8 +171,8 @@ export default function Men() {
                 >...</button>)
         }
 
-        //show prev page
-        if (currentPage - 1 > 1) { //if first is not prev page or current page
+        //show previous page if there is one (exclude if previous page is first page)
+        if (currentPage - 1 > 1) {
             pageElements.push(
                 <button 
                     onClick={() => loadMore(currentPage - 1)}
@@ -169,7 +181,8 @@ export default function Men() {
                 >{currentPage - 1}</button>)
         }
 
-        if (currentPage !== 1 && currentPage !== pages) { //if not on first or last page, show current page
+        //show current page if not on first or last page
+        if (currentPage !== 1 && currentPage !== pages) {
             pageElements.push(
                 <button 
                     onClick={() => loadMore(currentPage)}
@@ -178,8 +191,8 @@ export default function Men() {
                 >{currentPage}</button>)
         }
 
-        //show next page
-        if (currentPage + 1 < pages) { //if next or current is not last page 
+        //show next page if there is one (exclude if next page is last page)
+        if (currentPage + 1 < pages) {
             pageElements.push(
                 <button 
                     onClick={() => loadMore(currentPage + 1)}
@@ -188,6 +201,7 @@ export default function Men() {
                 >{currentPage + 1}</button>)
         }
 
+        //show "..." divider between current page and last page if there is significant gap in between
         if (currentPage + 2 < pages) {
             pageElements.push(
                 <button 
@@ -196,6 +210,7 @@ export default function Men() {
                 >...</button>)
         }
 
+        //always show last page
         if (pages > 1) {
             pageElements.push(
                 <button 
@@ -206,7 +221,6 @@ export default function Men() {
                     key={`page${pages}`}
                 >{pages}</button>)
         }
-
 
         return (
             <div className="man-list">
@@ -222,7 +236,7 @@ export default function Men() {
     return (
         <div className="man-page-container">
             <h1>Look through a list of otome men</h1>
-            <div className="man-list-content-container">
+            <div className="man-page-content-container">
                 {renderFilters()}
                 <React.Suspense fallback={<h2>Loading men...</h2>}>
                     <Await resolve={Promise.all([dataPromise.men, dataPromise.count])}>

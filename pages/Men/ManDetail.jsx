@@ -13,6 +13,7 @@ export default function ManDetail() {
     const [spoilerLevel, setSpoilerLevel] = React.useState(location.state?.spoilerLevel.toString() || "0")
     const search = location.state?.search || "";
 
+    //toggles spoiler level changes for page
     function handleChange(event) {
         const {value} = event.target
         setSpoilerLevel(value)
@@ -20,6 +21,8 @@ export default function ManDetail() {
 
     function renderManElement(manData) {
         const man = manData.results[0]
+
+        //only retrieve personality traits and show according to spoiler level
         const personalityTraits = man.traits.filter(trait => trait.group_id === "i39" && trait.spoiler <= spoilerLevel)
         const traits = personalityTraits.map(trait => trait.name)
         const titles = man.vns.map(vn => <li key={vn.id}>{vn.title}</li>)
