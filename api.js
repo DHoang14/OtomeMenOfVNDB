@@ -102,3 +102,37 @@ function createBasicOptionsObj() {
         "count" : false
     }
 }
+
+export async function registerUser() {
+    //post
+    //requires user and pass in body
+
+   
+}
+
+export async function authenticateUser() {
+    //post
+    //requires user and pass in body
+    //returns accesstoken
+}
+
+export async function refreshToken() {
+    //get
+    //returns accesstoken
+}
+
+export async function logoutUser() {
+    //get
+    //need to delete accesstoken on front end
+}
+
+export async function createComment() {
+    //post
+    //requires bearer auth header (put access token in here)
+    //body requires user and content
+
+}
+
+export async function getAllComments() {
+    //get
+}

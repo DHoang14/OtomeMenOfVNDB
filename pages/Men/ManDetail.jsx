@@ -2,6 +2,7 @@ import React from "react"
 import { Link, useLocation, useLoaderData, defer, Await } from "react-router-dom"
 import { getCharacter } from "../../api"
 import missingImg from "../../assets/images/NoImage.png"
+import { AccessTokenContext } from "../../context/accessTokenContext"
 
 export function loader({ params }) {
     return defer ({man: getCharacter(params.id)})
@@ -11,7 +12,9 @@ export default function ManDetail() {
     const location = useLocation()
     const dataPromise = useLoaderData()
     const [spoilerLevel, setSpoilerLevel] = React.useState(location.state?.spoilerLevel.toString() || "0")
-    const search = location.state?.search || "";
+    const search = location.state?.search || ""
+
+    const { token, setToken } = React.useContext(AccessTokenContext)
 
     //toggles spoiler level changes for page
     function handleChange(event) {
