@@ -103,36 +103,138 @@ function createBasicOptionsObj() {
     }
 }
 
-export async function registerUser() {
+export async function registerUser(user, pass) {
     //post
     //requires user and pass in body
+    const requestOptions = {
+        method: "POST",
+        headers: {"Content-Type": "application/json"}, 
+        credentials: "include",
+        body: JSON.stringify({user, pass})
+    }
 
-   
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_ENDPOINT}/register`, requestOptions)
+    if (!res.ok) {
+        throw {
+            message: res.message,
+            statusText: res.statusText,
+            status: res.status
+        }
+    }
+    const data = await res.json()
+
+    return data
 }
 
-export async function authenticateUser() {
+export async function authenticateUser(user, pass) {
     //post
     //requires user and pass in body
     //returns accesstoken
+    const requestOptions = {
+        method: "POST",
+        headers: {"Content-Type": "application/json"}, 
+        credentials: "include",
+        body: JSON.stringify({user, pass})
+    }
+
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_ENDPOINT}/auth`, requestOptions)
+    if (!res.ok) {
+        throw {
+            message: res.message,
+            statusText: res.statusText,
+            status: res.status
+        }
+    }
+    const data = await res.json()
+
+    return data
 }
 
 export async function refreshToken() {
     //get
     //returns accesstoken
+    const requestOptions = {
+        method: "GET",
+        headers: {"Content-Type": "application/json"}, 
+        credentials: "include"
+    }
+
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_ENDPOINT}/refresh`, requestOptions)
+    if (!res.ok) {
+        throw {
+            message: res.message,
+            statusText: res.statusText,
+            status: res.status
+        }
+    }
+    const data = await res.json()
+
+    return data
 }
 
 export async function logoutUser() {
     //get
     //need to delete accesstoken on front end
+    const requestOptions = {
+        method: "GET",
+        headers: {"Content-Type": "application/json"}, 
+        credentials: "include"
+    }
+
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_ENDPOINT}/logout`, requestOptions)
+    if (!res.ok) {
+        throw {
+            message: res.message,
+            statusText: res.statusText,
+            status: res.status
+        }
+    }
+    const data = await res.json()
+
+    return data
 }
 
-export async function createComment() {
+export async function createComment(charID, user, content, accessToken) {
     //post
     //requires bearer auth header (put access token in here)
     //body requires user and content
+    const requestOptions = {
+        method: "POST",
+        headers: {"Content-Type": "application/json", "Authorization": `Bearer ${accessToken}`}, 
+        credentials: "include",
+        body: JSON.stringify({user, content})
+    }
 
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_ENDPOINT}/comments/${charID}`, requestOptions)
+    if (!res.ok) {
+        throw {
+            message: res.message,
+            statusText: res.statusText,
+            status: res.status
+        }
+    }
+    const data = await res.json()
+
+    return data
 }
 
-export async function getAllComments() {
+export async function getAllComments(charID) {
     //get
+    const requestOptions = {
+        method: "GET",
+        headers: {"Content-Type": "application/json"}, 
+        credentials: "include",
+    }
+
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_ENDPOINT}/comments/${charID}`, requestOptions)
+    if (!res.ok) {
+        throw {
+            message: res.message,
+            statusText: res.statusText,
+            status: res.status
+        }
+    }
+    const data = await res.json()
+
+    return data
 }
