@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import React, { createContext, useState } from "react"
 
 const AccessTokenContext = createContext({
     token: null,
@@ -6,7 +6,7 @@ const AccessTokenContext = createContext({
 })
 
 const AccessTokenProvider = ({children}) => {
-    const [token, setToken] = useState(null);
+    const [token, setToken] = useState(null)
 
     return (
         <AccessTokenContext.Provider value={{token, setToken}}>
