@@ -8,12 +8,17 @@ import {
 } from "react-router-dom"
 import Home from "./pages/Home"
 import About from "./pages/About"
+import LoginLayout from './components/LoginLayout';
+import Login, { action as loginAction } from "./pages/Login"
+import Register, { action as registerAction } from './pages/Register';
 import TagInfo from "./pages/TagInfo"
 import Men, { loader as menLoader, action as menAction } from "./pages/Men/Men"
 import ManDetail, { loader as manDetailLoader } from "./pages/Men/ManDetail"
 import NotFound from "./pages/NotFound"
 import Layout from "./components/Layout"
 import Error from "./components/Error"
+import { AccessTokenProvider } from "./context/accessTokenContext"
+import { UserContextProvider } from './context/userContext';
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<Layout />}>
@@ -33,14 +38,29 @@ const router = createBrowserRouter(createRoutesFromElements(
       loader={manDetailLoader}
     />
     <Route path="tags" element={<TagInfo />} />
-
+    <Route path="login" element={<LoginLayout />}>
+      <Route
+        index
+        element={<Login />}
+        action={loginAction}
+      />
+      <Route 
+        path="register"
+        element={<Register />}
+        action={registerAction}
+      />
+    </Route>
     <Route path="*" element={<NotFound />} />
   </Route>
 ))
 
 function App() {
   return (
-    <RouterProvider router={router} />
+    <UserContextProvider>
+      <AccessTokenProvider>
+        <RouterProvider router={router} />
+      </AccessTokenProvider>
+    </UserContextProvider>
   )
 }
 
