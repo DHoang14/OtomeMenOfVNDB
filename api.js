@@ -113,7 +113,14 @@ export async function registerUser(user, pass) {
         body: JSON.stringify({user, pass})
     }
 
-    const res = await fetch(`${process.env.REACT_APP_BACKEND_ENDPOINT}/register`, requestOptions)
+    try {
+        const res = await fetch(`http://localhost:3500/register`, requestOptions)
+    } catch (err) {
+        throw {
+            status: '500'
+        }
+    }
+
     if (!res.ok) {
         throw {
             message: res.message,
@@ -122,7 +129,7 @@ export async function registerUser(user, pass) {
         }
     }
     const data = await res.json()
-
+    console.log(data)
     return data
 }
 
@@ -137,7 +144,14 @@ export async function authenticateUser(user, pass) {
         body: JSON.stringify({user, pass})
     }
 
-    const res = await fetch(`${process.env.REACT_APP_BACKEND_ENDPOINT}/auth`, requestOptions)
+    try {
+        const res = await fetch(`http://localhost:3500/auth`, requestOptions)
+    } catch (err) {
+        throw {
+            status: '500'
+        }
+    }
+
     if (!res.ok) {
         throw {
             message: res.message,
@@ -146,6 +160,7 @@ export async function authenticateUser(user, pass) {
         }
     }
     const data = await res.json()
+    console.log(data)
 
     return data
 }
@@ -158,8 +173,9 @@ export async function refreshToken() {
         headers: {"Content-Type": "application/json"}, 
         credentials: "include"
     }
+    //console.log(`${import.meta.env.REACT_APP_BACKEND_ENDPOINT}`)
 
-    const res = await fetch(`${process.env.REACT_APP_BACKEND_ENDPOINT}/refresh`, requestOptions)
+    const res = await fetch(`http://localhost:3500/refresh`, requestOptions)
     if (!res.ok) {
         throw {
             message: res.message,
@@ -167,7 +183,9 @@ export async function refreshToken() {
             status: res.status
         }
     }
+    
     const data = await res.json()
+    console.log(data)
 
     return data
 }
@@ -181,7 +199,7 @@ export async function logoutUser() {
         credentials: "include"
     }
 
-    const res = await fetch(`${process.env.REACT_APP_BACKEND_ENDPOINT}/logout`, requestOptions)
+    const res = await fetch(`http://localhost:3500/logout`, requestOptions)
     if (!res.ok) {
         throw {
             message: res.message,
@@ -189,7 +207,12 @@ export async function logoutUser() {
             status: res.status
         }
     }
+    console.log(res)
+    if (res.status === 204) {
+        return null;
+    }
     const data = await res.json()
+    console.log(data)
 
     return data
 }
@@ -205,7 +228,7 @@ export async function createComment(charID, user, content, accessToken) {
         body: JSON.stringify({user, content})
     }
 
-    const res = await fetch(`${process.env.REACT_APP_BACKEND_ENDPOINT}/comments/${charID}`, requestOptions)
+    const res = await fetch(`http://localhost:3500/comments/${charID}`, requestOptions)
     if (!res.ok) {
         throw {
             message: res.message,
@@ -214,6 +237,7 @@ export async function createComment(charID, user, content, accessToken) {
         }
     }
     const data = await res.json()
+    console.log(data)
 
     return data
 }
@@ -226,7 +250,7 @@ export async function getAllComments(charID) {
         credentials: "include",
     }
 
-    const res = await fetch(`${process.env.REACT_APP_BACKEND_ENDPOINT}/comments/${charID}`, requestOptions)
+    const res = await fetch(`http://localhost:3500/comments/${charID}`, requestOptions)
     if (!res.ok) {
         throw {
             message: res.message,
@@ -234,7 +258,12 @@ export async function getAllComments(charID) {
             status: res.status
         }
     }
+    console.log(res.status)
+    if (res.status === 204) {
+        return null;
+    }
     const data = await res.json()
+    console.log(data)
 
     return data
 }
