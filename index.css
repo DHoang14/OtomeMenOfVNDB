@@ -375,4 +375,74 @@ input[type="checkbox"]:checked::before {
     color: white;
 }
 
+.login-nav {
+    padding: 20px 10px 0 10px;
+    gap: 20px;
+    background-clip: content-box;
+    background-color: #6ba6ff;
+}
+
+.login-nav > a {
+    font-size: 25px;
+    margin: 8px 8px;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.login-container > h1 {
+    margin-bottom: 0;
+}
+
+.login-error {
+    color:red;
+    margin: 5px 0 0px 0;
+    font-size: 18px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 15px;
+}
+
+.login-form > input {
+    border: 1px solid rgb(0, 9, 141);
+    height: 30px;
+    text-indent: 7px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.46);
+    border-radius: 3px;
+}
+
+.login-form > input:last-of-type {
+    border-top: none;
+}
+
+.login-form > button {
+    margin-top: 8px;
+    height: 34px;
+    border-style: none;
+    border-radius: 5px;
+    background-color: #59a2c4;
+    color: #ffffff;
+}
+
+.login-form > button:hover {
+    color: #000000;
+    cursor: pointer;
+}
+
+.login-form > button:disabled {
+    background-color: #b3b3b3;
+    color:#000000;
+    cursor: not-allowed;
+}
+
+
 
