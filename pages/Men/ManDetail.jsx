@@ -1,20 +1,61 @@
 import React from "react"
-import { Link, useLocation, useLoaderData, defer, Await } from "react-router-dom"
-import { getCharacter } from "../../api"
+import { Link, useLocation, useLoaderData, defer, Await, useNavigate, useParams } from "react-router-dom"
+import { getCharacter, getAllComments, createComment, refreshToken } from "../../api"
 import missingImg from "../../assets/images/NoImage.png"
 import { AccessTokenContext } from "../../context/accessTokenContext"
+import MarkdownEditor from "@uiw/react-markdown-editor"
+import { logoutUser } from "../../api"
+import { UserContext } from "../../context/userContext"
 
-export function loader({ params }) {
-    return defer ({man: getCharacter(params.id)})
+export function loader({params}) {
+    return defer ({man: getCharacter(params.id), comments: getAllComments(params.id)})
 }
 
 export default function ManDetail() {
     const location = useLocation()
     const dataPromise = useLoaderData()
+    console.log(dataPromise)
     const [spoilerLevel, setSpoilerLevel] = React.useState(location.state?.spoilerLevel.toString() || "0")
     const search = location.state?.search || ""
+    const navigate = useNavigate()
 
-    const { token, setToken } = React.useContext(AccessTokenContext)
+    const [markdown, setMarkdown] = React.useState("");
+
+    const {user, setUser} = React.useContext(UserContext)
+    const {token, setToken} = React.useContext(AccessTokenContext)
+    let showAsLoggedIn = true
+
+    const [submittedComment, setSubmittedComment] = React.useState(false)
+
+    React.useEffect(() => {
+        async function logout() {
+            if (user) { //if user is logged in, log them out
+                const res = await logoutUser()
+                localStorage.removeItem("user")
+                setUser(null)
+            }
+        }
+
+        async function refresh() {
+            try {
+                const data = await refreshToken()
+                console.log(data.accessToken)
+                setToken(data)
+                return data
+            } catch (err) {
+                console.log(err)
+                //if failed to get new access token, logout
+                logout()
+                showAsLoggedIn = false
+                return null
+            }
+        }
+
+        if (!token) {
+            console.log("refreshed")
+            refresh()
+        }
+    }, [])
 
     //toggles spoiler level changes for page
     function handleChange(event) {
@@ -56,6 +97,43 @@ export default function ManDetail() {
         )
     }
 
+    async function handleCommentSubmit() {
+        console.log("clicked")
+        if (showAsLoggedIn) {
+            const charID = location.pathname.split("/")[2];
+            await createComment(charID, user, markdown, token.accessToken)
+            setSubmittedComment(true)
+        } else {
+            navigate(`/login?redirectTo=${location.pathname}`)
+        }
+    }
+
+    function renderComments(comments) {
+        console.log(comments)
+        let commentElement
+        if (showAsLoggedIn && !submittedComment) {
+            commentElement = <MarkdownEditor 
+                value={markdown}
+                height="200px"
+                onChange={(value) => setMarkdown(value)}/>
+        } else if (showAsLoggedIn && submittedComment) {
+            commentElement = <p>Submitted comment!</p>
+        } else {
+            commentElement = <p>You must be logged in to make a new comment.</p>
+        }
+        return (
+            <div>
+                    {commentElement}
+                    {!submittedComment && 
+                        <button
+                            onClick={handleCommentSubmit}>
+                        {showAsLoggedIn? "Submit comment" : "Log in"} 
+                        </button>
+                    }
+            </div>
+        )
+    }
+
     return (
         <div className="man-detail-container">
             <Link
@@ -67,6 +145,12 @@ export default function ManDetail() {
             <React.Suspense fallback={<h2>Loading character...</h2>}>
                 <Await resolve={dataPromise.man}>
                     {renderManElement}
+                </Await>
+            </React.Suspense>
+            
+            <React.Suspense fallback={<h2>Loading comments...</h2>}>
+                <Await resolve={dataPromise.comments}>
+                    {renderComments}
                 </Await>
             </React.Suspense>
         </div>

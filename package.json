@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@uiw/react-markdown-editor": "^6.1.2",
     "html-react-parser": "^5.1.16",
     "miragejs": "0.1.46",
     "react": "18.2.0",
@@ -18,5 +19,6 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "*"
-  }
+  },
+  "proxy": "localhost:3500"
 }
