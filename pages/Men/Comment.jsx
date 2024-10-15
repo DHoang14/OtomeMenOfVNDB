@@ -1,6 +1,5 @@
 import React from 'react'
 import rehypeSanitize from 'rehype-sanitize'
-import { Remark } from 'react-remark'
 import remarkGfm from 'remark-gfm'
 import ReactMarkdown from 'react-markdown'
 export default function Comment(props) {
