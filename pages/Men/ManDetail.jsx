@@ -4,9 +4,10 @@ import { getCharacter, getAllComments, createComment, refreshToken } from "../..
 import missingImg from "../../assets/images/NoImage.png"
 import { AccessTokenContext } from "../../context/accessTokenContext"
 import MarkdownEditor from "@uiw/react-markdown-editor"
+import rehypeSanitize from "rehype-sanitize"
 import { logoutUser } from "../../api"
 import { UserContext } from "../../context/userContext"
-
+import Comment from './Comment'
 export function loader({params}) {
     return defer ({man: getCharacter(params.id), comments: getAllComments(params.id)})
 }
@@ -19,7 +20,7 @@ export default function ManDetail() {
     const search = location.state?.search || ""
     const navigate = useNavigate()
 
-    const [markdown, setMarkdown] = React.useState("");
+    const [markdown, setMarkdown] = React.useState("Add a comment...");
 
     const {user, setUser} = React.useContext(UserContext)
     const {token, setToken} = React.useContext(AccessTokenContext)
@@ -110,20 +111,32 @@ export default function ManDetail() {
 
     function renderComments(comments) {
         console.log(comments)
-        let commentElement
+        const commentElements = comments.map(comment => <Comment 
+            key={comment.commentID}
+            user={comment.userID}
+            date={comment.date}
+            content={comment.content}
+            />)
+        let createCommentElement
         if (showAsLoggedIn && !submittedComment) {
-            commentElement = <MarkdownEditor 
+            createCommentElement = <MarkdownEditor 
                 value={markdown}
                 height="200px"
-                onChange={(value) => setMarkdown(value)}/>
+                onChange={(value) => setMarkdown(value)}
+                previewProps={{
+                    rehypePlugins: [[rehypeSanitize]],
+                }}/>
         } else if (showAsLoggedIn && submittedComment) {
-            commentElement = <p>Submitted comment!</p>
+            createCommentElement = <p>Submitted comment! Refresh the page to see your comment.</p>
         } else {
-            commentElement = <p>You must be logged in to make a new comment.</p>
+            createCommentElement = <p>You must be logged in to make a new comment.</p>
         }
         return (
             <div>
-                    {commentElement}
+                    <div className="man-detail-comments">
+                        {commentElements}
+                    </div>
+                    {createCommentElement}
                     {!submittedComment && 
                         <button
                             onClick={handleCommentSubmit}>

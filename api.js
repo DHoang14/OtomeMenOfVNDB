@@ -112,9 +112,9 @@ export async function registerUser(user, pass) {
         credentials: "include",
         body: JSON.stringify({user, pass})
     }
-
+    let res
     try {
-        const res = await fetch(`http://localhost:3500/register`, requestOptions)
+        res = await fetch(`http://localhost:3500/register`, requestOptions)
     } catch (err) {
         throw {
             status: '500'
@@ -143,9 +143,9 @@ export async function authenticateUser(user, pass) {
         credentials: "include",
         body: JSON.stringify({user, pass})
     }
-
+    let res
     try {
-        const res = await fetch(`http://localhost:3500/auth`, requestOptions)
+        res = await fetch(`http://localhost:3500/auth`, requestOptions)
     } catch (err) {
         throw {
             status: '500'
@@ -174,8 +174,14 @@ export async function refreshToken() {
         credentials: "include"
     }
     //console.log(`${import.meta.env.REACT_APP_BACKEND_ENDPOINT}`)
-
-    const res = await fetch(`http://localhost:3500/refresh`, requestOptions)
+    let res
+    try {
+        res = await fetch(`http://localhost:3500/refresh`, requestOptions)
+    } catch (err) {
+        throw {
+            status: '500'
+        }
+    }
     if (!res.ok) {
         throw {
             message: res.message,
@@ -198,8 +204,14 @@ export async function logoutUser() {
         headers: {"Content-Type": "application/json"}, 
         credentials: "include"
     }
-
-    const res = await fetch(`http://localhost:3500/logout`, requestOptions)
+    let res
+    try {
+        res = await fetch(`http://localhost:3500/logout`, requestOptions)
+    } catch (err) {
+        throw {
+            status: '500'
+        }
+    }
     if (!res.ok) {
         throw {
             message: res.message,
@@ -227,8 +239,14 @@ export async function createComment(charID, user, content, accessToken) {
         credentials: "include",
         body: JSON.stringify({user, content})
     }
-
-    const res = await fetch(`http://localhost:3500/comments/${charID}`, requestOptions)
+    let res
+    try {
+        res = await fetch(`http://localhost:3500/comments/${charID}`, requestOptions)
+    } catch (err) {
+        throw {
+            status: '500'
+        }
+    }
     if (!res.ok) {
         throw {
             message: res.message,
@@ -249,8 +267,15 @@ export async function getAllComments(charID) {
         headers: {"Content-Type": "application/json"}, 
         credentials: "include",
     }
-
-    const res = await fetch(`http://localhost:3500/comments/${charID}`, requestOptions)
+    let res
+    try {
+    
+        res = await fetch(`http://localhost:3500/comments/${charID}`, requestOptions)
+    } catch (err) {
+        throw {
+            status: '500'
+        }
+    }
     if (!res.ok) {
         throw {
             message: res.message,

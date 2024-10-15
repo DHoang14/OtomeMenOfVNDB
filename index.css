@@ -444,5 +444,30 @@ input[type="checkbox"]:checked::before {
     cursor: not-allowed;
 }
 
+.comment-container {
+    background-color: #5293be;
+    padding: 5px 10px;
+    border-bottom: 1px solid #000000;
+    max-width: 500px;
+}
 
+.comment-header {
+    margin: 0px;
+    font-size: 16px;
+    color: rgb(0, 0, 0);
+}
+
+.comment-date {
+    color: #353535;
+}
+
+.comment-content {
+    font-size: 16px;
+}
+
+.man-detail-comments {
+    display: flex;
+    flex-direction: column;
+    margin : 20px 0px;
+}
 
