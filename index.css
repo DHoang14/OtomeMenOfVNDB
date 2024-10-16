@@ -380,6 +380,7 @@ input[type="checkbox"]:checked::before {
     gap: 20px;
     background-clip: content-box;
     background-color: #6ba6ff;
+    max-width: 235px;
 }
 
 .login-nav > a {

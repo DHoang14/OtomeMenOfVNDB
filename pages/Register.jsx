@@ -64,11 +64,17 @@ export default function Register() {
                     name="user"
                     type="text"
                     placeholder="Username"
+                    pattern="[a-zA-Z0-9]+"
+                    title="Username can only contain letters (A-Z) and numbers."
+                    required
                 />
                 <input
                     name="password"
                     type="password"
                     placeholder="Password"
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,}"
+                    title="Must contain at least one  number and one uppercase and lowercase letter, and at least 12 or more characters."
+                    required
                 />
                 <button
                     disabled={navigation.state === "submitting"}
