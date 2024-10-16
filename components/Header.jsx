@@ -22,14 +22,24 @@ export default function Header() {
             >
                 Login/Signup
             </NavLink>
+    } else if (user === "loggingOut"){
+        loginStatus = <a>Logging Out...</a>
+
     } else {
         loginStatus = <Link 
             to="/"
             onClick={async () => {
-                const res = await logoutUser()
-                localStorage.removeItem("user")
-                setUser(null)
-                setToken(null)
+                try {
+                    const res = await logoutUser()
+                    localStorage.removeItem("user")
+                    setUser(null)
+                    setToken(null)
+                } catch (err) {
+                    //failed to log out due to server error
+                    //maybe simulate logout by removing user from local storage/context and jwt cookie instead?
+                    //TODO: consider simulating logout on user end even without connection to server to force user to reauthenticate next time it is up
+
+                }
             }}
             >
                 Log out

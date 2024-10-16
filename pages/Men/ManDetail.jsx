@@ -8,6 +8,8 @@ import rehypeSanitize from "rehype-sanitize"
 import { logoutUser } from "../../api"
 import { UserContext } from "../../context/userContext"
 import Comment from './Comment'
+import {ErrorBoundary} from "react-error-boundary"
+
 export function loader({params}) {
     return defer ({man: getCharacter(params.id), comments: getAllComments(params.id)})
 }
@@ -31,9 +33,16 @@ export default function ManDetail() {
     React.useEffect(() => {
         async function logout() {
             if (user) { //if user is logged in, log them out
-                const res = await logoutUser()
-                localStorage.removeItem("user")
-                setUser(null)
+                try {
+                    const res = await logoutUser()
+                    localStorage.removeItem("user")
+                    setUser(null)
+                } catch (err) {
+                    //couldn't logout due to server error
+                    //maybe simulate logout by removing user from local storage/context and jwt cookie instead?
+                    //TODO: consider simulating logout on user end even without connection to server to force user to reauthenticate next time it is up
+                    console.log(err)
+                }
             }
         }
 
@@ -147,6 +156,9 @@ export default function ManDetail() {
         )
     }
 
+
+    //note: error boundary currently throws duplicate errors, but this can be resolved by updating to React 19 and implementing new options for error handling
+    //TODO: update to react 19 and make sure nothing breaks
     return (
         <div className="man-detail-container">
             <Link
@@ -154,18 +166,20 @@ export default function ManDetail() {
                 relative="path"
                 className="back-button"
             >&larr; <span>Back to searching for similar otome men</span></Link>
-
-            <React.Suspense fallback={<h2>Loading character...</h2>}>
-                <Await resolve={dataPromise.man}>
-                    {renderManElement}
-                </Await>
-            </React.Suspense>
-            
-            <React.Suspense fallback={<h2>Loading comments...</h2>}>
-                <Await resolve={dataPromise.comments}>
-                    {renderComments}
-                </Await>
-            </React.Suspense>
+            <ErrorBoundary fallback={<h2>Failed to load character.</h2>}>
+                <React.Suspense fallback={<h2>Loading character...</h2>}>
+                    <Await resolve={dataPromise.man}>
+                        {renderManElement}
+                    </Await>
+                </React.Suspense>
+            </ErrorBoundary>
+            <ErrorBoundary fallback={<h2>Failed to load comments. Please try again in a few minutes.</h2>}>
+                <React.Suspense fallback={<h2>Loading comments...</h2>}>
+                    <Await resolve={dataPromise.comments}>
+                        {renderComments}
+                    </Await>
+                </React.Suspense>
+            </ErrorBoundary>
         </div>
     )
 }
