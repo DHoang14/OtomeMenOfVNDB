@@ -5,7 +5,6 @@ export default function LoginLayout() {
     const activeStyles = {
         fontWeight: "bold",
         textDecoration: "underline",
-        color: "#161616"
     }
 
     const [searchParams, setSearchParams] = useSearchParams()

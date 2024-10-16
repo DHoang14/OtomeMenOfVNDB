@@ -22,7 +22,7 @@ export default function ManDetail() {
     const search = location.state?.search || ""
     const navigate = useNavigate()
 
-    const [markdown, setMarkdown] = React.useState("Add a comment...");
+    const [markdown, setMarkdown] = React.useState("Suggest a similar character...");
 
     const {user, setUser} = React.useContext(UserContext)
     const {token, setToken} = React.useContext(AccessTokenContext)
@@ -93,15 +93,15 @@ export default function ManDetail() {
                 <br/>
                 <fieldset>
                     <legend>Spoiler Level for Personality Traits</legend>
-                    <label>
+                    <label className="radio">
                         <input type="radio" name="spoiler_level" value="0" checked={spoilerLevel === "0"} onChange={handleChange} />
-                    No spoilers</label><br/>
-                    <label>
+                    No spoilers</label>
+                    <label className="radio">
                         <input type="radio" name="spoiler_level" value="1" checked={spoilerLevel === "1"} onChange={handleChange}/>
-                    Minor spoilers</label><br/>
-                    <label>
+                    Minor spoilers</label>
+                    <label className="radio">
                         <input type="radio" name="spoiler_level" value="2" checked={spoilerLevel === "2"} onChange={handleChange}/>
-                    Show all spoilers</label><br/>
+                    Show all spoilers</label>
                 </fieldset>
             </div>
         )
@@ -143,6 +143,7 @@ export default function ManDetail() {
         return (
             <div>
                     <div className="man-detail-comments">
+                        <h2>Comments</h2>
                         {commentElements}
                     </div>
                     {createCommentElement}

@@ -90,16 +90,16 @@ export default function Men() {
 
         //creates spoiler level selection
         const spoilerElement = (
-            <div>
-                <label>
+            <div className="man-filter-spoiler-container">
+                <label className="radio">
                     <input type="radio" name="spoiler_level" value="0" defaultChecked={spoilerLevel === 0} />
-                No spoilers</label><br/>
-                <label>
+                No spoilers</label>
+                <label className="radio">
                     <input type="radio" name="spoiler_level" value="1" defaultChecked={spoilerLevel === 1} />
-                Minor spoilers</label><br/>
-                <label>
+                Minor spoilers</label>
+                <label className="radio">
                     <input type="radio" name="spoiler_level" value="2" defaultChecked={spoilerLevel === 2}/>
-                Show all spoilers</label><br/>
+                Show all spoilers</label>
             </div>
         )
 

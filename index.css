@@ -76,9 +76,8 @@ input[type="checkbox"] {
     font: inherit;
     width: 1.15em;
     height: 1.15em;
-    border: 0.15em solid #424242;
+    border: 0.0625em solid #424242;
     border-radius: 0.15em;
-    transform: translateY(-0.075em);
     
     display: grid;
     place-content: center;
@@ -90,7 +89,7 @@ input[type="checkbox"]::before {
     height: 0.65em;
     transform: scale(0);
     transition: 120ms transform ease-in-out;
-    background-color: #19678b;
+    background-color: #1f7a8c;
 
     transform-origin: bottom left;
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
@@ -103,6 +102,40 @@ input[type="checkbox"]:checked::before {
 .checkbox {
     display: grid;
     grid-template-columns: 1em auto;
+    gap: 0.5em;
+}
+
+input[type="radio"] {
+    appearance: none;
+    background-color: #fff;
+    margin: 0;
+    font: inherit;
+    width: 1.15em;
+    height: 1.15em;
+    border: 0.0625em solid #424242;
+    border-radius: 50%;
+    
+    display: grid;
+    place-content: center;
+}
+
+input[type="radio"]::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    background-color: #1f7a8c;
+}
+
+input[type="radio"]:checked::before {
+    transform: scale(1);
+}
+
+.radio {
+    display: grid;
+    grid-template: 1em auto / 1em auto;
     gap: 0.5em;
 }
 
@@ -143,11 +176,11 @@ input[type="checkbox"]:checked::before {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #276070;
+    background: #1f7a8c;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #264b64;
+    background: #022b3a;
 }
 
 /*** HOME PAGE ***/
@@ -176,7 +209,7 @@ input[type="checkbox"]:checked::before {
     display: inline-block;
     text-align: center;
     text-decoration: none;
-    background-color: #59a2c4;
+    background-color: #1f7a8c;
     border: none;
     width: 100%;
     margin-top: 27px;
@@ -232,7 +265,7 @@ input[type="checkbox"]:checked::before {
 
 .man-page-content-container {
     display: flex;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .man-filter-container {
@@ -251,6 +284,10 @@ input[type="checkbox"]:checked::before {
     margin: 0;
 }
 
+.man-filter-spoiler-container {
+    margin-bottom: 10px;
+}
+
 .man-filter-form > button {
     margin: 20px 0 0 0;
 }
@@ -264,7 +301,6 @@ input[type="checkbox"]:checked::before {
 }
 
 .man-list {
-    width: 75%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     justify-items: center;
@@ -273,7 +309,7 @@ input[type="checkbox"]:checked::before {
 }
 
 .man-tile {
-    width: 400px;
+    max-width: 400px;
 }
 
 .man-tile a {
@@ -292,18 +328,17 @@ input[type="checkbox"]:checked::before {
     font-weight: 500;
     border-style: none;
     border-radius: 5px;
-    background-color: #59a2c4;
+    background-color: #1f7a8c;
     color: #FFFFFF;
     transition: 200ms all cubic-bezier(0.4, 0, 0.2, 1);
-    
 }
 
 .man-button:hover {
-    color: #000000;
+    background-color: #022b3a;
 }
 
 .man-button.selected {
-    color: #000000;
+    background-color: #022b3a;
 }
 
 .man-button:focus {
@@ -352,6 +387,34 @@ input[type="checkbox"]:checked::before {
     margin: 0 0 10px 0;
 }
 
+.man-detail-comments {
+    display: flex;
+    flex-direction: column;
+    margin : 20px 0px;
+    border-top: 1px solid #000000;
+}
+
+/*** COMMENT COMPONENT ***/
+.comment-container {
+    padding: 5px 10px;
+    border-bottom: 1px solid #000000;
+    max-width: 500px;
+}
+
+.comment-header {
+    margin: 0px;
+    font-size: 16px;
+    color: rgb(0, 0, 0);
+}
+
+.comment-date {
+    color: #919191;
+}
+
+.comment-content {
+    font-size: 16px;
+}
+
 /*** TAG PAGE ****/
 .tag-content {
     padding: 0 20px 0 20px;
@@ -371,16 +434,20 @@ input[type="checkbox"]:checked::before {
 
 .not-found-container .link-button {
     width: 100%;
-    background-color: #161616;
+    background-color: #1f7a8c;
     color: white;
 }
 
+/*** LOGIN/REGISTER PAGE ***/
+
 .login-nav {
-    padding: 20px 10px 0 10px;
+    padding: 0px 10px 0 10px;
     gap: 20px;
-    background-clip: content-box;
-    background-color: #6ba6ff;
     max-width: 235px;
+    border-radius: 7px;
+    background-color: #1f7a8c;
+    color: white;
+    margin: 10px 5px;
 }
 
 .login-nav > a {
@@ -430,7 +497,7 @@ input[type="checkbox"]:checked::before {
     height: 34px;
     border-style: none;
     border-radius: 5px;
-    background-color: #59a2c4;
+    background-color: #1f7a8c;
     color: #ffffff;
 }
 
@@ -440,35 +507,41 @@ input[type="checkbox"]:checked::before {
 }
 
 .login-form > button:disabled {
-    background-color: #b3b3b3;
+    background-color: #e1e5f2;
     color:#000000;
     cursor: not-allowed;
 }
 
-.comment-container {
-    background-color: #5293be;
-    padding: 5px 10px;
-    border-bottom: 1px solid #000000;
-    max-width: 500px;
+/*** RESPONSIVE CSS ***/
+@media (max-width:445px) {
+    header {
+        flex-direction: column;
+        margin-bottom: 70px;
+    }
+
+    nav {
+        flex-direction: column;
+    }
+
+    .man-page-content-container {
+        flex-direction: column;
+        margin-top: 10px;
+    }
+    
+    .man-list {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .man-page-list {
+        display: flex;
+    }
 }
 
-.comment-header {
-    margin: 0px;
-    font-size: 16px;
-    color: rgb(0, 0, 0);
+/* At this specific range, the top part of the logo is cut off due to word wrapping */
+@media (max-width:452px) and (min-width:446px) {
+    header .site-logo {
+        font-size: 23px;
+    }
 }
-
-.comment-date {
-    color: #353535;
-}
-
-.comment-content {
-    font-size: 16px;
-}
-
-.man-detail-comments {
-    display: flex;
-    flex-direction: column;
-    margin : 20px 0px;
-}
-
