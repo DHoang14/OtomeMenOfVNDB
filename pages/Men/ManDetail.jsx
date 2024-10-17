@@ -29,6 +29,7 @@ export default function ManDetail() {
     let showAsLoggedIn = true
 
     const [submittedComment, setSubmittedComment] = React.useState(false)
+    const [submissionError, setSubmissionError] = React.useState(null)
 
     React.useEffect(() => {
         async function logout() {
@@ -39,8 +40,7 @@ export default function ManDetail() {
                     setUser(null)
                 } catch (err) {
                     //couldn't logout due to server error
-                    //maybe simulate logout by removing user from local storage/context and jwt cookie instead?
-                    //TODO: consider simulating logout on user end even without connection to server to force user to reauthenticate next time it is up
+                    //cannot just simulate logout due to backend (sometimes goes offline currently) being the only one who can remove the jwt cookie
                     console.log(err)
                 }
             }
@@ -110,8 +110,13 @@ export default function ManDetail() {
     async function handleCommentSubmit() {
         console.log("clicked")
         if (showAsLoggedIn) {
-            const charID = location.pathname.split("/")[2];
-            await createComment(charID, user, markdown, token.accessToken)
+            const charID = location.pathname.split("/")[2]; 
+            try {
+                await createComment(charID, user, markdown, token.accessToken)
+                setSubmissionError(null)
+            } catch (err) {
+                setSubmissionError(err.status)
+            }
             setSubmittedComment(true)
         } else {
             navigate(`/login?redirectTo=${location.pathname}`)
@@ -120,12 +125,14 @@ export default function ManDetail() {
 
     function renderComments(comments) {
         console.log(comments)
-        const commentElements = comments.map(comment => <Comment 
-            key={comment.commentID}
-            user={comment.userID}
-            date={comment.date}
-            content={comment.content}
-            />)
+        const commentElements = comments? 
+                comments.map(comment => <Comment 
+                key={comment.commentID}
+                user={comment.userID}
+                date={comment.date}
+                content={comment.content}
+                />)
+                : null
         let createCommentElement
         if (showAsLoggedIn && !submittedComment) {
             createCommentElement = <MarkdownEditor 
@@ -136,7 +143,15 @@ export default function ManDetail() {
                     rehypePlugins: [[rehypeSanitize]],
                 }}/>
         } else if (showAsLoggedIn && submittedComment) {
-            createCommentElement = <p>Submitted comment! Refresh the page to see your comment.</p>
+            if (!submissionError) {
+                createCommentElement = <p>Submitted comment! Refresh the page to see your comment.</p>
+            }
+            else if (submissionError === 400) {
+                createCommentElement = <p>Cannot submit empty comment.</p> 
+            }
+            else {
+                createCommentElement = <p>Error submitting comment. Please try again in a few minutes.</p>
+            }
         } else {
             createCommentElement = <p>You must be logged in to make a new comment.</p>
         }
