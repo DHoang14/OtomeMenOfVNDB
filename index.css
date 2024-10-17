@@ -41,7 +41,7 @@ header .site-logo {
     margin-right: auto;
     text-transform: uppercase;
     font-weight: 700;
-    font-size: 25px;
+    font-size: 21px;
     font-family: "Oleo Script", sans-serif;
 }
 
@@ -536,12 +536,5 @@ input[type="radio"]:checked::before {
 
     .man-page-list {
         display: flex;
-    }
-}
-
-/* At this specific range, the top part of the logo is cut off due to word wrapping */
-@media (max-width:452px) and (min-width:446px) {
-    header .site-logo {
-        font-size: 23px;
     }
 }
