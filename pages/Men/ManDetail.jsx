@@ -1,5 +1,5 @@
 import React from "react"
-import { Link, useLocation, useLoaderData, defer, Await, useNavigate, useParams } from "react-router-dom"
+import { Link, useLocation, useLoaderData, defer, Await, useNavigate } from "react-router-dom"
 import { getCharacter, getAllComments, createComment, refreshToken } from "../../api"
 import missingImg from "../../assets/images/NoImage.png"
 import { AccessTokenContext } from "../../context/accessTokenContext"
@@ -28,6 +28,7 @@ export default function ManDetail() {
     const {token, setToken} = React.useContext(AccessTokenContext)
     let showAsLoggedIn = true
 
+    const [submittingComment, setSubmittingComment] = React.useState(null)
     const [submittedComment, setSubmittedComment] = React.useState(false)
     const [submissionError, setSubmissionError] = React.useState(null)
 
@@ -112,11 +113,13 @@ export default function ManDetail() {
         if (showAsLoggedIn) {
             const charID = location.pathname.split("/")[2]; 
             try {
+                setSubmittingComment(true)
                 await createComment(charID, user, markdown, token.accessToken)
                 setSubmissionError(null)
             } catch (err) {
                 setSubmissionError(err.status)
             }
+            setSubmittingComment(false)
             setSubmittedComment(true)
         } else {
             navigate(`/login?redirectTo=${location.pathname}`)
@@ -164,8 +167,10 @@ export default function ManDetail() {
                     {createCommentElement}
                     {!submittedComment && 
                         <button
-                            onClick={handleCommentSubmit}>
-                        {showAsLoggedIn? "Submit comment" : "Log in"} 
+                            className="form-button"
+                            onClick={handleCommentSubmit}
+                            disabled={submittingComment}>
+                        {showAsLoggedIn? submittingComment? "Submitting..." : "Submit comment" : "Log in"} 
                         </button>
                     }
             </div>

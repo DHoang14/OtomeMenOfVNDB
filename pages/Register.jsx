@@ -77,6 +77,7 @@ export default function Register() {
                     required
                 />
                 <button
+                    className="form-button"
                     disabled={navigation.state === "submitting"}
                 >
                     {navigation.state === "submitting"

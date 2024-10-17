@@ -72,6 +72,7 @@ export default function Login() {
                     required
                 />
                 <button
+                    className="form-button"
                     disabled={navigation.state === "submitting"}
                 >
                     {navigation.state === "submitting"

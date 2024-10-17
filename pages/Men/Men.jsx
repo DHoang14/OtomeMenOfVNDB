@@ -114,9 +114,9 @@ export default function Men() {
                         <legend>Spoiler Level</legend>
                         {spoilerElement}
                     </fieldset>
-                    <button className="man-button">Apply filters</button>
+                    <button className="form-button">Apply filters</button>
                 </Form>
-                <button className="man-button" onClick={() => clearFilters()}>Clear all filters</button>
+                <button className="form-button" onClick={() => clearFilters()}>Clear all filters</button>
             </div>
         )
     }
@@ -156,7 +156,7 @@ export default function Men() {
             <button 
                 onClick={() => loadMore(null)}
                 className={
-                    `man-button 
+                    `form-button 
                 ${currentPage === 1 ? "selected" : ""}`}
                 key="page1"
             >1</button>]
@@ -166,7 +166,7 @@ export default function Men() {
         if (currentPage - 2 > 1) {
             pageElements.push(
                 <button 
-                    className="man-button"
+                    className="form-button"
                     key="pageDividerLeft"
                 >...</button>)
         }
@@ -176,7 +176,7 @@ export default function Men() {
             pageElements.push(
                 <button 
                     onClick={() => loadMore(currentPage - 1)}
-                    className="man-button"
+                    className="form-button"
                     key={`page${currentPage - 1}`}
                 >{currentPage - 1}</button>)
         }
@@ -186,7 +186,7 @@ export default function Men() {
             pageElements.push(
                 <button 
                     onClick={() => loadMore(currentPage)}
-                    className="man-button selected"
+                    className="form-button selected"
                     key={`page${currentPage}`}
                 >{currentPage}</button>)
         }
@@ -196,7 +196,7 @@ export default function Men() {
             pageElements.push(
                 <button 
                     onClick={() => loadMore(currentPage + 1)}
-                    className="man-button"
+                    className="form-button"
                     key={`page${currentPage + 1}`}
                 >{currentPage + 1}</button>)
         }
@@ -205,7 +205,7 @@ export default function Men() {
         if (currentPage + 2 < pages) {
             pageElements.push(
                 <button 
-                    className="man-button"
+                    className="form-button"
                     key="pageDividerRight"
                 >...</button>)
         }
@@ -216,7 +216,7 @@ export default function Men() {
                 <button 
                     onClick={() => loadMore(pages)}
                     className={
-                        `man-button 
+                        `form-button 
                     ${currentPage === pages ? "selected" : ""}`}
                     key={`page${pages}`}
                 >{pages}</button>)
