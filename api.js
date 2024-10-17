@@ -117,7 +117,7 @@ export async function registerUser(user, pass) {
         res = await fetch(`http://localhost:3500/register`, requestOptions)
     } catch (err) {
         throw {
-            status: '500'
+            status: 500,
         }
     }
 
@@ -148,7 +148,7 @@ export async function authenticateUser(user, pass) {
         res = await fetch(`http://localhost:3500/auth`, requestOptions)
     } catch (err) {
         throw {
-            status: '500'
+            status: 500,
         }
     }
 
@@ -179,7 +179,7 @@ export async function refreshToken() {
         res = await fetch(`http://localhost:3500/refresh`, requestOptions)
     } catch (err) {
         throw {
-            status: '500'
+            status: '500',
         }
     }
     if (!res.ok) {
@@ -189,7 +189,7 @@ export async function refreshToken() {
             status: res.status
         }
     }
-    
+
     const data = await res.json()
     console.log(data)
 
@@ -209,7 +209,7 @@ export async function logoutUser() {
         res = await fetch(`http://localhost:3500/logout`, requestOptions)
     } catch (err) {
         throw {
-            status: '500'
+            status: '500',
         }
     }
     if (!res.ok) {
@@ -244,7 +244,7 @@ export async function createComment(charID, user, content, accessToken) {
         res = await fetch(`http://localhost:3500/comments/${charID}`, requestOptions)
     } catch (err) {
         throw {
-            status: '500'
+            status: '500',
         }
     }
     if (!res.ok) {
@@ -273,7 +273,7 @@ export async function getAllComments(charID) {
         res = await fetch(`http://localhost:3500/comments/${charID}`, requestOptions)
     } catch (err) {
         throw {
-            status: '500'
+            status: '500',
         }
     }
     if (!res.ok) {

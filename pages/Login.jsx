@@ -45,7 +45,9 @@ export default function Login() {
 
     let errorMsg
     if (actionData?.error) {
-        if (actionData.error === '500') {
+        if (actionData.error === 401) {
+            errorMsg = "Incorrect username or password."
+        } else if (actionData.error === 500) {
             errorMsg = 'Cannot connect to server. Please try again in a few minutes.'
         }
     }

@@ -46,7 +46,7 @@ export default function Register() {
 
     let errorMsg
     if (actionData?.error) {
-        if (actionData.error === '500') {
+        if (actionData.error === 500) {
             errorMsg = 'Cannot connect to server. Please try again in a few minutes.'
         }
     }
