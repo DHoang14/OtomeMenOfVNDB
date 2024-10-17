@@ -30,15 +30,15 @@ export default function Header() {
             to="/"
             onClick={async () => {
                 try {
+                    setUser("loggingOut")
                     const res = await logoutUser()
                     localStorage.removeItem("user")
-                    setUser(null)
                     setToken(null)
+                    setUser(null)
                 } catch (err) {
                     //failed to log out due to server error
-                    //maybe simulate logout by removing user from local storage/context and jwt cookie instead?
-                    //TODO: consider simulating logout on user end even without connection to server to force user to reauthenticate next time it is up
-
+                    //reset status back to being logged in
+                    setUser(localStorage.getItem("user"))
                 }
             }}
             >
