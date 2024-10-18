@@ -130,7 +130,7 @@ export default function Men() {
             const traits = man.traits.filter(trait => trait.group_id === "i39" && trait.spoiler <= spoilerLevel)
             const traitNames = traits.map(trait => trait.name)
             return (
-            <div key={man.id} className="man-tile">
+            <div key={man.id} className="man-tile" aria-label={`A tile for ${man.name} that is clickable to access more detailed information about them.`}>
                 <Link
                     to={man.id}
                     state={{
@@ -138,7 +138,7 @@ export default function Men() {
                         spoilerLevel: spoilerLevel
                     }}
                 >
-                    <img src={man.image?.url || missingImg} />
+                    <img src={man.image?.url || missingImg} alt={man.image? `An image of ${man.name}` : `No image available for ${man.name}`} />
                     <div className="man-info">
                         <h3>{man.name}</h3>
                         <p>Traits: {traitNames.length > 0? traitNames.join(", ") : "None have been added to this character."}</p>

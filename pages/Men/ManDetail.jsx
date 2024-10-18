@@ -84,7 +84,7 @@ export default function ManDetail() {
 
         return (
             <div className="man-detail">
-                <img src={man.image?.url || missingImg} />
+                <img src={man.image?.url || missingImg} alt={man.image? `An image of ${man.name}` : `No image available for ${man.name}`}/>
                 <h2>{man.name}</h2>
                 <p>Personality traits: {traits.length > 0? traits.join(", ") : "None have been added to this character."}</p>
                 <p>Titles they star in as a love interest:</p>
