@@ -11,6 +11,9 @@ import About from "./pages/About"
 import LoginLayout from './components/LoginLayout';
 import Login, { action as loginAction } from "./pages/Login"
 import Register, { action as registerAction } from './pages/Register';
+import ForgotLoginInfo, { action as forgotAction } from './pages/ForgotLoginInfo';
+import ResetPassword, { loader as resetLoader, action as resetAction } from './pages/ResetPassword';
+import ResetPasswordStatus, { loader as resetStatusLoader} from './pages/ResetPasswordStatus';
 import TagInfo from "./pages/TagInfo"
 import Men, { loader as menLoader, action as menAction } from "./pages/Men/Men"
 import ManDetail, { loader as manDetailLoader } from "./pages/Men/ManDetail"
@@ -50,6 +53,22 @@ const router = createBrowserRouter(createRoutesFromElements(
         action={registerAction}
       />
     </Route>
+    <Route
+      path="forgotLogin"
+      element={<ForgotLoginInfo />}
+      action={forgotAction} 
+    />
+    <Route
+      path="reset/:token"
+      element={<ResetPassword />}
+      loader={resetLoader}
+      action={resetAction}
+    />
+    <Route 
+      path="reset/:token/:result"
+      element={<ResetPasswordStatus />}
+      loader={resetStatusLoader}
+    />
     <Route path="*" element={<NotFound />} />
   </Route>
 ))

@@ -103,14 +103,14 @@ function createBasicOptionsObj() {
     }
 }
 
-export async function registerUser(user, pass) {
+export async function registerUser(user, pass, email) {
     //post
     //requires user and pass in body
     const requestOptions = {
         method: "POST",
         headers: {"Content-Type": "application/json"}, 
         credentials: "include",
-        body: JSON.stringify({user, pass})
+        body: JSON.stringify({email, user, pass})
     }
     let res
     try {
@@ -286,6 +286,96 @@ export async function getAllComments(charID) {
     console.log(res.status)
     if (res.status === 204) {
         return null;
+    }
+    const data = await res.json()
+    console.log(data)
+
+    return data
+}
+
+export async function forgotPassword(email) {
+    //post
+    //body requires email
+    const requestOptions = {
+        method: "POST",
+        headers: {"Content-Type": "application/json"}, 
+        credentials: "include",
+        body: JSON.stringify({email})
+    }
+    let res
+    try {
+        res = await fetch(`http://localhost:3500/forgotPassword`, requestOptions)
+    } catch (err) {
+        throw {
+            status: '500',
+        }
+    }
+    if (!res.ok) {
+        throw {
+            message: res.message,
+            statusText: res.statusText,
+            status: res.status
+        }
+    }
+    const data = await res.json()
+    console.log(data)
+
+    return data
+}
+
+export async function resetVerification(resetToken) {
+    //get
+    //requires resetToken as params
+    const requestOptions = {
+        method: "GET",
+        headers: {"Content-Type": "application/json"}, 
+        credentials: "include",
+    }
+    let res
+    try {
+        res = await fetch(`http://localhost:3500/reset/${resetToken}`, requestOptions)
+    } catch (err) {
+        throw {
+            status: '500',
+        }
+    }
+    if (!res.ok) {
+        throw {
+            message: res.message,
+            statusText: res.statusText,
+            status: res.status
+        }
+    }
+    const data = await res.json()
+    console.log(data)
+
+    return data
+}
+
+
+export async function updatePassword(user, newPassword, resetToken) {
+    //put
+    //body requires user, new password and reset token
+    const requestOptions = {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"}, 
+        credentials: "include",
+        body: JSON.stringify({user, newPassword, resetToken})
+    }
+    let res
+    try {
+        res = await fetch(`http://localhost:3500/updatePassword`, requestOptions)
+    } catch (err) {
+        throw {
+            status: '500',
+        }
+    }
+    if (!res.ok) {
+        throw {
+            message: res.message,
+            statusText: res.statusText,
+            status: res.status
+        }
     }
     const data = await res.json()
     console.log(data)

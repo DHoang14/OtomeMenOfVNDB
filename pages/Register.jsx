@@ -13,6 +13,7 @@ import { UserContext } from "../context/userContext"
 
 export async function action({request}) {
     const formData = await request.formData()
+    const email = formData.get("email")
     const user = formData.get("user")
     const pass = formData.get("password")
     const pathname = new URL(request.url)
@@ -20,7 +21,7 @@ export async function action({request}) {
 
 
     try {
-        const newUser = await registerUser(user, pass)
+        const newUser = await registerUser(user, pass, email)
         const data = await authenticateUser(user, pass)
         return json({token: data, path: pathname, username: user})
     } catch(err) {
@@ -63,6 +64,12 @@ export default function Register() {
                 className="login-form" 
                 replace
             >
+                <input
+                    name="email"
+                    type="email"
+                    placeholder="Email address"
+                    required
+                />
                 <input
                     name="user"
                     type="text"

@@ -458,15 +458,40 @@ input[type="radio"]:checked::before {
 }
 
 .login-form > input {
-    border: 1px solid rgb(0, 9, 141);
+    border: 1px solid #1f7a8c;
     height: 30px;
     text-indent: 7px;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.46);
     border-radius: 3px;
+    border-top: none;
 }
 
-.login-form > input:last-of-type {
-    border-top: none;
+.login-form > input:first-of-type {
+    border-top: 1px solid #1f7a8c;
+}
+
+.login-forgot-link {
+    cursor: pointer;
+    color: #022b3a;
+}
+
+.forgot-login-container {
+    margin: 0 10px;
+}
+
+.forgot-login-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+}
+
+.forgot-login-form > input {
+    border: 1px solid #1f7a8c;
+    height: 30px;
+    text-indent: 7px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.46);
+    border-radius: 3px;
 }
 
 .form-button {

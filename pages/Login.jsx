@@ -2,10 +2,10 @@ import React, { useContext, useRef } from "react"
 import {
     useNavigation,
     Form,
-    redirect,
     useActionData,
     useNavigate,
-    json
+    json,
+    Link
 } from "react-router-dom"
 import { authenticateUser } from "../api"
 import { AccessTokenContext } from "../context/accessTokenContext"
@@ -82,6 +82,7 @@ export default function Login() {
                         : "Log in"
                     }
                 </button>
+                <Link to="/forgotLogin" className="login-forgot-link">Forgot password?</Link>
             </Form>
         </div>
     )
