@@ -2,7 +2,6 @@ import React, { useRef, useContext } from "react"
 import {
     useNavigation,
     Form,
-    useLocation,
     useActionData,
     useNavigate,
     json
@@ -18,7 +17,6 @@ export async function action({request}) {
     const pass = formData.get("password")
     const pathname = new URL(request.url)
         .searchParams.get("redirectTo") || "/"
-
 
     try {
         const newUser = await registerUser(user, pass, email)
