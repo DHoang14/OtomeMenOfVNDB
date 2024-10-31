@@ -122,8 +122,9 @@ export async function registerUser(user, pass, email) {
     }
 
     if (!res.ok) {
+        const errorMsg = await res.json()
         throw {
-            message: res.message,
+            message: errorMsg.message,
             statusText: res.statusText,
             status: res.status
         }

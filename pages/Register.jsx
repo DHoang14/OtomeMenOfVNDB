@@ -25,7 +25,7 @@ export async function action({request}) {
         const data = await authenticateUser(user, pass)
         return json({token: data, path: pathname, username: user})
     } catch(err) {
-        return json({error: err.status})
+        return json({error: err.status, message: err.message})
     }
 }
 
@@ -48,7 +48,15 @@ export default function Register() {
     let errorMsg
     if (actionData?.error) {
         if (actionData.error === 409) {
-            errorMsg = 'Username already taken. Please choose another name.'
+            const splitMsg = actionData.message.split(" ")
+            let duplicateError
+            if (splitMsg[0] == "Username" && splitMsg[1] == "Email") {
+                duplicateError = "Username and Email are both "
+            } 
+            else {
+                duplicateError = `${splitMsg[0]} is`
+            }
+            errorMsg = `${duplicateError} already taken. Please try again with different inputs.`
         }
         else if (actionData.error === 500) {
             errorMsg = 'Cannot connect to server. Please try again in a few minutes.'
