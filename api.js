@@ -114,7 +114,7 @@ export async function registerUser(user, pass, email) {
     }
     let res
     try {
-        res = await fetch(`http://localhost:3500/register`, requestOptions)
+        res = await fetch(`${import.meta.env.VITE_BACKEND_ENDPOINT}/register`, requestOptions)
     } catch (err) {
         throw {
             status: 500,
@@ -146,7 +146,7 @@ export async function authenticateUser(user, pass) {
     }
     let res
     try {
-        res = await fetch(`http://localhost:3500/auth`, requestOptions)
+        res = await fetch(`${import.meta.env.VITE_BACKEND_ENDPOINT}/auth`, requestOptions)
     } catch (err) {
         throw {
             status: 500,
@@ -177,7 +177,7 @@ export async function refreshToken() {
     //console.log(`${import.meta.env.REACT_APP_BACKEND_ENDPOINT}`)
     let res
     try {
-        res = await fetch(`http://localhost:3500/refresh`, requestOptions)
+        res = await fetch(`${import.meta.env.VITE_BACKEND_ENDPOINT}/refresh`, requestOptions)
     } catch (err) {
         throw {
             status: '500',
@@ -207,7 +207,7 @@ export async function logoutUser() {
     }
     let res
     try {
-        res = await fetch(`http://localhost:3500/logout`, requestOptions)
+        res = await fetch(`${import.meta.env.VITE_BACKEND_ENDPOINT}/logout`, requestOptions)
     } catch (err) {
         throw {
             status: '500',
@@ -242,7 +242,7 @@ export async function createComment(charID, user, content, accessToken) {
     }
     let res
     try {
-        res = await fetch(`http://localhost:3500/comments/${charID}`, requestOptions)
+        res = await fetch(`${import.meta.env.VITE_BACKEND_ENDPOINT}/comments/${charID}`, requestOptions)
     } catch (err) {
         throw {
             status: '500',
@@ -271,7 +271,7 @@ export async function getAllComments(charID) {
     let res
     try {
     
-        res = await fetch(`http://localhost:3500/comments/${charID}`, requestOptions)
+        res = await fetch(`${import.meta.env.VITE_BACKEND_ENDPOINT}/comments/${charID}`, requestOptions)
     } catch (err) {
         throw {
             status: '500',
@@ -305,7 +305,7 @@ export async function forgotPassword(email) {
     }
     let res
     try {
-        res = await fetch(`http://localhost:3500/forgotPassword`, requestOptions)
+        res = await fetch(`${import.meta.env.VITE_BACKEND_ENDPOINT}/forgotPassword`, requestOptions)
     } catch (err) {
         throw {
             status: '500',
@@ -334,7 +334,7 @@ export async function resetVerification(resetToken) {
     }
     let res
     try {
-        res = await fetch(`http://localhost:3500/reset/${resetToken}`, requestOptions)
+        res = await fetch(`${import.meta.env.VITE_BACKEND_ENDPOINT}/reset/${resetToken}`, requestOptions)
     } catch (err) {
         throw {
             status: '500',
@@ -365,7 +365,7 @@ export async function updatePassword(user, newPassword, resetToken) {
     }
     let res
     try {
-        res = await fetch(`http://localhost:3500/updatePassword`, requestOptions)
+        res = await fetch(`${import.meta.env.VITE_BACKEND_ENDPOINT}/updatePassword`, requestOptions)
     } catch (err) {
         throw {
             status: '500',
