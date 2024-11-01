@@ -35,7 +35,6 @@ export default function Login() {
     const userContextRef = useRef(useContext(UserContext))
     React.useEffect(() => {
         if (actionData?.token) {
-            console.log("login")
             localStorage.setItem("user", actionData.username)
             tokenContextRef.current.setToken(actionData.token)
             userContextRef.current.setUser(actionData.username)

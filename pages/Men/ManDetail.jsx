@@ -17,7 +17,6 @@ export function loader({params}) {
 export default function ManDetail() {
     const location = useLocation()
     const dataPromise = useLoaderData()
-    console.log(dataPromise)
     const [spoilerLevel, setSpoilerLevel] = React.useState(location.state?.spoilerLevel.toString() || "0")
     const search = location.state?.search || ""
     const navigate = useNavigate()
@@ -42,7 +41,6 @@ export default function ManDetail() {
                 } catch (err) {
                     //couldn't logout due to server error
                     //cannot just simulate logout due to backend (sometimes goes offline currently) being the only one who can remove the jwt cookie
-                    console.log(err)
                 }
             }
         }
@@ -50,11 +48,9 @@ export default function ManDetail() {
         async function refresh() {
             try {
                 const data = await refreshToken()
-                console.log(data.accessToken)
                 setToken(data)
                 return data
             } catch (err) {
-                console.log(err)
                 //if failed to get new access token, logout
                 logout()
                 showAsLoggedIn = false
@@ -63,7 +59,6 @@ export default function ManDetail() {
         }
 
         if (!token) {
-            console.log("refreshed")
             refresh()
         }
     }, [])
@@ -109,7 +104,6 @@ export default function ManDetail() {
     }
 
     async function handleCommentSubmit() {
-        console.log("clicked")
         if (showAsLoggedIn) {
             const charID = location.pathname.split("/")[2]; 
             try {
@@ -127,7 +121,6 @@ export default function ManDetail() {
     }
 
     function renderComments(comments) {
-        console.log(comments)
         const commentElements = comments? 
                 comments.map(comment => <Comment 
                 key={comment.commentID}

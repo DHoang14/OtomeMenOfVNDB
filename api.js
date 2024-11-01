@@ -130,7 +130,6 @@ export async function registerUser(user, pass, email) {
         }
     }
     const data = await res.json()
-    console.log(data)
     return data
 }
 
@@ -161,7 +160,6 @@ export async function authenticateUser(user, pass) {
         }
     }
     const data = await res.json()
-    console.log(data)
 
     return data
 }
@@ -174,7 +172,6 @@ export async function refreshToken() {
         headers: {"Content-Type": "application/json"}, 
         credentials: "include"
     }
-    //console.log(`${import.meta.env.REACT_APP_BACKEND_ENDPOINT}`)
     let res
     try {
         res = await fetch(`${import.meta.env.VITE_BACKEND_ENDPOINT}/refresh`, requestOptions)
@@ -192,7 +189,6 @@ export async function refreshToken() {
     }
 
     const data = await res.json()
-    console.log(data)
 
     return data
 }
@@ -220,12 +216,10 @@ export async function logoutUser() {
             status: res.status
         }
     }
-    console.log(res)
     if (res.status === 204) {
         return null;
     }
     const data = await res.json()
-    console.log(data)
 
     return data
 }
@@ -256,7 +250,6 @@ export async function createComment(charID, user, content, accessToken) {
         }
     }
     const data = await res.json()
-    console.log(data)
 
     return data
 }
@@ -284,12 +277,10 @@ export async function getAllComments(charID) {
             status: res.status
         }
     }
-    console.log(res.status)
     if (res.status === 204) {
         return null;
     }
     const data = await res.json()
-    console.log(data)
 
     return data
 }
@@ -319,7 +310,6 @@ export async function forgotPassword(email) {
         }
     }
     const data = await res.json()
-    console.log(data)
 
     return data
 }
@@ -348,7 +338,6 @@ export async function resetVerification(resetToken) {
         }
     }
     const data = await res.json()
-    console.log(data)
 
     return data
 }
@@ -379,7 +368,6 @@ export async function updatePassword(user, newPassword, resetToken) {
         }
     }
     const data = await res.json()
-    console.log(data)
 
     return data
 }
